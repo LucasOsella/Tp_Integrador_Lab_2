@@ -1,0 +1,20 @@
+html 
+    head 
+
+    body 
+        table
+            thead 
+                tr
+                    th Nombre
+                    th Apellido 
+                    th e-mail 
+                    th Telefono 
+                    th Estado
+            tbody 
+                each medico in medicos 
+                    tr
+                        td = medico.nombre 
+                        td = medico.apellido 
+                        td = medico.e-mail 
+                        td = medico.telefono 
+                        td = medico.estado            
