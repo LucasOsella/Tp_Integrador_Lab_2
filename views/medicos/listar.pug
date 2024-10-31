@@ -1,20 +1,23 @@
-html 
-    head 
-
-    body 
-        table
-            thead 
+extends ../layout.pug
+block contenido 
+    a(href="/medicos/create" class ="btn btn-success") Crear Medico
+    table(class= "table")
+        thead 
+            tr
+                th Nombre
+                th Apellido 
+                th e-mail 
+                th Telefono 
+                th Estado
+                th Administar
+        tbody 
+            each medico in medicos 
                 tr
-                    th Nombre
-                    th Apellido 
-                    th e-mail 
-                    th Telefono 
-                    th Estado
-            tbody 
-                each medico in medicos 
-                    tr
-                        td = medico.nombre 
-                        td = medico.apellido 
-                        td = medico.e-mail 
-                        td = medico.telefono 
-                        td = medico.estado            
+                    td= medico.nombre
+                    td=  medico.apellido 
+                    td=  medico.mail 
+                    td=  medico.telefono 
+                    td=  (medico.estado == 1)? 'Activo':'Inactivo'
+                    td            
+                        a(href="/medicos/editar" class="btn btn-info") Editar
+                        a(href="/medicos/editar" class="btn btn-danger") Borrar 

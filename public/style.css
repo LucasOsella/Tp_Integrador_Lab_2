@@ -1,0 +1,81 @@
+/* Estilo para la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+  }
+  
+  .table th, .table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+  }
+  
+  .table th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .table tr:hover {
+    background-color: #ddd;
+  }
+  
+  /* Estilo para botones */
+  .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    margin: 5px;
+    border: none;
+  }
+  
+  .btn-primary {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #45a049;
+  }
+  
+  .btn-secondary {
+    background-color: #008CBA;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #007bb5;
+  }
+  
+  .btn-danger {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .btn-danger:hover {
+    background-color: #e53935;
+  }
+  .btn-success {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .btn-success:hover {
+    background-color: #45a049;
+  }
+  .btn-info {
+    background-color: #008CBA;
+    color: white;
+  }
+  
+  .btn-info:hover {
+    background-color: #007bb5;
+  }
+  
