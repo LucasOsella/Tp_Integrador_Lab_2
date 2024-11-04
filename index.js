@@ -16,7 +16,7 @@ const conn = mysql.createConnection({
 app.set('view engine', 'pug');
 app.set('views','views');
 app.use(express.static('public'));
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/listarMedicos', (req, res) => {
     conn.query('SELECT * FROM medicos', (err, rows) => {
@@ -33,7 +33,7 @@ app.get('/medicos/create', (req, res) => {
     res.render('medicos/crear');
 });
 
-app.post('/medicos', (req, res) => {
+app.post('/medicos/crear', (req, res) => {
     const nombre = req.body.nombre;
     const apellido = req.body.apellido;
     const dni = req.body.dni;
@@ -59,6 +59,48 @@ app.post('/medicos', (req, res) => {
         }
     });
 });
+
+app.get('/medicos/editar/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'SELECT * FROM medicos WHERE id_medico = ?';
+    conn.query(sql, [id], (err, rows) => {
+        if (err) {
+            console.log(err, "No se pudo recuperar el registro");
+            res.status(500).send("Error al recuperar el registro");
+        } else {
+            const medico = rows[0];
+            // Convertir fecha_alta al formato YYYY-MM-DD si existe
+            if (medico && medico.fecha_alta) {
+                medico.fecha_alta = medico.fecha_alta.toISOString().split('T')[0];
+            }
+            res.render('medicos/editar', { medico });
+        }
+    });
+});
+
+
+app.post('/medicos/subir/:id', (req, res) => {
+    const id_medico = req.params.id;  // Obtén el ID desde los parámetros de la URL
+    console.log(id_medico);
+    const { nombre, apellido, dni, mail, telefono, fecha} = req.body;
+    let estado = req.body.estado === 'on' ? 1 : 0;
+ 
+
+    const sql = 'UPDATE medicos SET nombre = ?, apellido = ?, dni = ?, mail = ?, telefono = ?, estado = ?, fecha_alta = ? WHERE id_medico = ?';
+    const values = [nombre, apellido, dni, mail, telefono, estado, fecha, id_medico];
+
+    conn.query(sql, values, (err, rows) => {
+        if (err) {
+            console.log(err, "No se pudo actualizar el registro");
+            res.status(500).send("Error al actualizar el registro");
+        } else {
+            res.redirect('/listarMedicos');
+        }
+    });
+});
+
+
+
 
 
 app.listen(3000, () => {
