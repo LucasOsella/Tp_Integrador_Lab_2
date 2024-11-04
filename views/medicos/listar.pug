@@ -14,12 +14,12 @@ block contenido
         tbody 
             each medico in medicos 
                 tr  
-                    td= medico.id_medico
-                    td= medico.nombre
-                    td=  medico.apellido 
-                    td=  medico.mail 
-                    td=  medico.telefono 
-                    td=  (medico.estado == 1)? 'Activo':'Inactivo'
+                    td=     medico.id_medico
+                    td=     medico.nombre
+                    td=     medico.apellido 
+                    td=     medico.mail 
+                    td=     medico.telefono 
+                    td=     (medico.estado == 1)? 'Activo':'Inactivo'
                     td            
                         a(href=`/medicos/editar/${medico.id_medico}` class="btn btn-info") Editar
                         a(href="/medicos/editar" class="btn btn-danger") Borrar 
