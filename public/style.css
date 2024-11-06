@@ -78,4 +78,73 @@
   .btn-info:hover {
     background-color: #007bb5;
   }
-  
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  .container input{
+    float: right;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+ /* Oculta el checkbox original */
+.container input[type="checkbox"] {
+  display: none;
+}
+
+/* Estilos para el label */
+.container input[type="checkbox"] + label {
+  position: relative;
+  padding-left: 30px; /* Espacio para el cuadro de checkbox */
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Cuadro del checkbox */
+.container input[type="checkbox"] + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+/* Checkmark (marca de verificación) */
+.container input[type="checkbox"]:checked + label:before {
+  background-color: #4CAF50;
+  content: "✓";
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+  .container input[type="date"]{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  .container label{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    float: left;
+  }

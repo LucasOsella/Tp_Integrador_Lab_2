@@ -1,22 +1,30 @@
 extends ../layout.pug
 block contenido 
-    form(action=`/medicos/subir/${medico.id_medico}` method="post")
-        input(name="id_medico", type="text", value=medico.id_medico, readonly) 
-        br        
-        input(name="nombre", type="text", placeholder="Ingrese Nombre", value=medico.nombre)
-        br
-        input(name="apellido", type="text", placeholder="Ingrese Apellido", value=medico.apellido)
-        br
-        input(type="text", name="dni", placeholder="Ingrese DNI", value=medico.dni)
-        br
-        input(type="text", name="mail", placeholder="Ingrese E-mail", value=medico.mail)
-        br
-        input(type="text", name="telefono", placeholder="Ingrese Telefono", value=medico.telefono)
-        br
-        label(for="checkbox1") Estado 
-        input(type="checkbox", name="estado", id="checkbox1" checked=medico.estado === 1)
-        br
-        input(type="date", name="fecha", value=medico.fecha_alta)
-        br
-        input(type="submit", value="Confirmar Edicion")
+    div(class= "container")
+        form(action=`/medicos/subir/${medico.id_medico}` method="post")
+            label(for="input1")  Id
+            input(name="id_medico", type="text", value=medico.id_medico, readonly) 
+            br
+            label(for="input2") Nombre
+            input(name="nombre", type="text", placeholder="Ingrese Nombre", value=medico.nombre)
+            br
+            label(for="input3") Apellido
+            input(name="apellido", type="text", placeholder="Ingrese Apellido", value=medico.apellido)
+            br
+            label(for="input4") DNI
+            input(type="text", name="dni", placeholder="Ingrese DNI", value=medico.dni)
+            br
+            label(for="input5") E-mail 
+            input(type="text", name="mail", placeholder="Ingrese E-mail", value=medico.mail)
+            br
+            label(for="input6") Telefono  
+            input(type="text", name="telefono", placeholder="Ingrese Telefono", value=medico.telefono)
+            br        
+            label(for="input7") Fecha Ingreso
+            input(type="date", name="fecha", value=medico.fecha_alta)
+            br
+            input(type="checkbox", name="estado", id="checkbox1" checked=medico.estado === 1)
+            label(for="checkbox1") Estado 
+            br
+            input(type="submit", value="Confirmar Edicion" class="btn btn-success")
 

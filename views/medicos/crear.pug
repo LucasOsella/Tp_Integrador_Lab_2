@@ -1,21 +1,22 @@
 extends ../layout.pug
 block contenido 
-    form(action="/medicos/crear" method="post") 
-        input(name="nombre", type="text",placeholder="Ingrese Nombre")
-        br
-        input(name="apellido",type="texto",placeholder="Ingrese Apellido")
-        br
-        input(type="text", name="dni",placeholder="Ingrese DNI")
-        br
-        input(type="text",name="mail",placeholder="Ingrese E-mail")
-        br
-        input(type="text",name="telefono",placeholder="Ingrese Telefono")
-        br
-        lablel(for="checkbox1") Estado 
-        input(type="checkbox", name="estado", id="checkbox1")
-        br
-        input(type="date", name="fecha")
-        br
-        input(type="submit", value="Agregar")
+    div(class= "container") 
+        form(action="/medicos/crear" method="post") 
+            input(name="nombre", type="text",placeholder="Ingrese Nombre")
+            br
+            input(name="apellido",type="texto",placeholder="Ingrese Apellido")
+            br
+            input(type="text", name="dni",placeholder="Ingrese DNI")
+            br
+            input(type="text",name="mail",placeholder="Ingrese E-mail")
+            br
+            input(type="text",name="telefono",placeholder="Ingrese Telefono")
+            br         
+            input(type="checkbox", name="estado", id="checkbox1")
+            label(for="checkbox1") Estado 
+            br
+            input(type="date", name="fecha")
+            br
+            input(type="submit", value="Agregar" class= "btn btn-success")
         
         
