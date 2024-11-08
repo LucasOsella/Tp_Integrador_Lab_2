@@ -102,7 +102,7 @@
 /* Estilos para el label */
 .container input[type="checkbox"] + label {
   position: relative;
-  padding-left: 30px; /* Espacio para el cuadro de checkbox */
+  padding-left: 10px; /* Espacio para el cuadro de checkbox */
   cursor: pointer;
   font-size: 16px;
   color: #333;
@@ -112,8 +112,9 @@
 .container input[type="checkbox"] + label:before {
   content: "";
   position: absolute;
-  left: 0;
-  top: 0;
+  right: 0;
+  bottom: auto;
+  top: auto;
   width: 20px;
   height: 20px;
   border: 1px solid #ccc;
@@ -143,8 +144,12 @@
   .container label{
     margin: 10px;
     padding: 10px;
+    padding: 10px 30px;
+    font-size: 16px;
+    cursor: pointer;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 16px;
     float: left;
+    left: 0;
   }
