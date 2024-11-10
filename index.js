@@ -18,6 +18,15 @@ app.set('views','./views');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+    res.redirect('/index');
+ })
+ 
+app.get('/index', (req, res) => {
+    res.render('principal/index');
+})
+
+
 
 app.get('/listarMedicos', (req, res) => {
     conn.query('SELECT * FROM medicos', (err, rows) => {
