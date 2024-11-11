@@ -1,6 +1,7 @@
 extends ../layout.pug
 block contenido 
     a(href="/medicos/create" class ="btn btn-success") Crear Medico
+    a(href="/medicos/especialidad" class ="btn btn-success") Cargar Especialidad
     table(class= "table")
         thead 
             tr
@@ -18,7 +19,7 @@ block contenido
                     td=     medico.nombre
                     td=     medico.apellido 
                     td=     medico.mail 
-                    td=     medico.telefono 
+                    td=     medico.telefono  
                     td=     (medico.estado == 1)? 'Activo':'Inactivo'
                     td            
                         a(href=`/medicos/editar/${medico.id_medico}` class="btn btn-info") Editar

@@ -26,7 +26,23 @@ app.get('/index', (req, res) => {
     res.render('principal/index');
 })
 
+function obtenerEspecialidades(callback) {
+    conn.query('SELECT * FROM especialidad', (err, rows) => {
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, rows);
+    });
+  }
 
+function obtenerMedicos(callback) {
+    conn.query('SELECT * FROM medicos', (err, rows) => {
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, rows);
+    });
+}  
 
 app.get('/listarMedicos', (req, res) => {
     conn.query('SELECT * FROM medicos', (err, rows) => {
@@ -40,7 +56,14 @@ app.get('/listarMedicos', (req, res) => {
 });
 
 app.get('/medicos/create', (req, res) => {
-    res.render('medicos/crear');
+    obtenerEspecialidades((err, especialidades) => {
+        if (err) {
+            console.log(err, "No se pudo recuperar las especialidades");
+            res.status(500).send("Error al recuperar las especialidades");
+        } else {
+            res.render('medicos/crear', {especialidades: especialidades});
+        }
+    });
 });
 
 app.post('/medicos/crear', (req, res) => {
@@ -56,10 +79,8 @@ app.post('/medicos/crear', (req, res) => {
         estado = 0;
     }
     const fecha_alta = req.body.fecha;
-
     const sql = 'INSERT INTO `medicos`(`nombre`, `apellido`, `dni`, `mail`, `telefono`, `estado`, `fecha_alta`) VALUES (?,?,?,?,?,?,?)';
     const values = [nombre, apellido, dni, mail, telefono, estado, fecha_alta];
-
     conn.query(sql, values, (err, rows) => {
         if (err) {
             console.log(err, "No se pudo registrar el médico en la base de datos");
@@ -109,13 +130,73 @@ app.post('/medicos/subir/:id', (req, res) => {
     });
 });
 
+app.get('/medicos/especialidad', (req, res) => {
+    const obtenerMedicos = new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM medicos', (err, rows) => {
+            if (err) {
+                console.log("No se pudo recuperar los médicos:", err);
+                reject(err);
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+
+    const obtenerEspecialidades = new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM especialidad', (err, rows) => {
+            if (err) {
+                console.log("No se pudo consultar la base de datos de las especialidades:", err);
+                reject(err);
+            } else if (!Array.isArray(rows)) {
+                console.log("Error: los datos de especialidades no son un arreglo");
+                reject(new Error("Error al obtener especialidades"));
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+
+    Promise.all([obtenerMedicos, obtenerEspecialidades])
+        .then(([medicos, especialidades]) => {
+            res.render('medicos/especialidad', { medicos, opciones: especialidades });
+        })
+        .catch(err => {
+            console.log("Error al obtener los datos:", err);
+            res.status(500).send("Error al obtener los datos");
+        });
+});
 
 
+app.post('/medicos/subirEspecialidad', (req, res) => {
+    const nombre = req.body.especialidad;
+    const sql = 'INSERT INTO `especialidad`(`nombre`) VALUES (?)';
+    conn.query(sql, [nombre], (err, rows) => {
+        if (err) {
+            console.log(err, "No se pudo registrar la especialidad en la base de datos");
+            res.status(500).send("Error al registrar la especialidad");
+        } else {
+            res.redirect('/listarMedicos');
+        }
+    });
+});
+
+app.post('/medicos/asignarEspecialidad', (req, res) => {
+    const opcionE = req.body.especialidadId;
+    const opcionM = req.body.medicoId;
+    const matricula= req.body.matricula;
+    const sql = 'INSERT INTO `especialidad_medico`(`id_medico`, `id_especialidad`, `matricula`) VALUES (?,?,?)';
+    conn.query(sql, [opcionE, opcionM, matricula], (err, rows) => {
+        if (err) {
+            console.log(err, "No se pudo registrar la especialidad en la base de datos");
+            res.status(500).send("Error al registrar la especialidad");
+        } else {
+            res.redirect('/listarMedicos');
+        }
+    });
+});
 
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
 }    
 );
-
-

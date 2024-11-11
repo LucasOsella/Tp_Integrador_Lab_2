@@ -1,0 +1,19 @@
+extends ../layout
+block contenido 
+    div(class="container") 
+        h1 Crear Especialidad 
+        form(action="/medicos/subirEspecialidad" method="post") 
+            input(type="text", name="especialidad", placeholder="Nombre de la especialidad")
+            br
+            input(type="submit", value="Confirmar" class="btn btn-success")
+        br
+        h1 Asignar Especialidad
+        form(action="/medicos/asignarEspecialidad" method="post") 
+            select(name="especialidadId", id="opcionE", placeholder="Especialidades")
+                each especialidad in opciones 
+                    option(value=especialidad.id_especialidad) #{especialidad.nombre} 
+            select(name="medicoId", id="opcionM", placeholder="Médicos")
+                each medico in medicos 
+                    option(value=medico.id_medico) #{medico.nombre}
+            input(type="text", name="matricula", placeholder="Ingrese matrícula")
+            input(type="submit", value="Confirmar" class="btn btn-success")
