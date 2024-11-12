@@ -13,6 +13,7 @@ block contenido
                 each especialidad in opciones 
                     option(value=especialidad.id_especialidad) #{especialidad.nombre} 
             select(name="medicoId", id="opcionM", placeholder="Médicos")
+                option(value="0", disabled selected) Seleccione un médico
                 each medico in medicos 
                     option(value=medico.id_medico) #{medico.nombre}
             input(type="text", name="matricula", placeholder="Ingrese matrícula")

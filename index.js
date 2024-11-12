@@ -35,6 +35,15 @@ function obtenerEspecialidades(callback) {
     });
   }
 
+function obtenerEspecialidadMedico(callback) {
+    conn.query('SELECT * FROM especialidad_medico', (err, rows) => {
+      if (err) {
+        return callback(err, null);
+      }
+      callback(null, rows);
+    });
+}
+
 function obtenerMedicos(callback) {
     conn.query('SELECT * FROM medicos', (err, rows) => {
       if (err) {
@@ -45,25 +54,58 @@ function obtenerMedicos(callback) {
 }  
 
 app.get('/listarMedicos', (req, res) => {
-    conn.query('SELECT * FROM medicos', (err, rows) => {
-        if (err) {
-            console.log(err,"No se puedo consutar la base de datos de los medicos");   
-        }  
-        res.render("medicos/listar", {medicos:  rows});    
-    });
+    // Realizamos una consulta para obtener los médicos y sus especialidades
+    const query = `
+        SELECT 
+            medicos.id_medico, 
+            medicos.nombre, 
+            medicos.apellido, 
+            medicos.mail, 
+            medicos.telefono, 
+            medicos.estado, 
+            especialidad.nombre AS especialidad 
+        FROM medicos
+        LEFT JOIN especialidad_medico ON medicos.id_medico = especialidad_medico.id_medico
+        LEFT JOIN especialidad ON especialidad_medico.id_especialidad = especialidad.id_especialidad
+    `;
 
-    
+    conn.query(query, (err, rows) => {
+        if (err) {
+            console.log("No se pudo consultar la base de datos de los médicos:", err);
+            return res.status(500).send("Error al obtener médicos y sus especialidades");
+        }
+
+        // Agrupamos las especialidades para cada médico
+        const medicosMap = rows.reduce((acc, row) => {
+            if (!acc[row.id_medico]) {
+                acc[row.id_medico] = {
+                    id_medico: row.id_medico,
+                    nombre: row.nombre,
+                    apellido: row.apellido,
+                    mail: row.mail,
+                    telefono: row.telefono,
+                    estado: row.estado,
+                    especialidades: []
+                };
+            }
+            // Agregamos la especialidad al médico actual
+            if (row.especialidad) {
+                acc[row.id_medico].especialidades.push(row.especialidad);
+            }
+            return acc;
+        }, {});
+
+        // Convertimos el objeto en un arreglo para pasarlo a la vista
+        const medicosConEspecialidades = Object.values(medicosMap);
+
+        res.render("medicos/listar", { medicos: medicosConEspecialidades });
+    });
 });
 
+
 app.get('/medicos/create', (req, res) => {
-    obtenerEspecialidades((err, especialidades) => {
-        if (err) {
-            console.log(err, "No se pudo recuperar las especialidades");
-            res.status(500).send("Error al recuperar las especialidades");
-        } else {
-            res.render('medicos/crear', {especialidades: especialidades});
-        }
-    });
+    res.render('medicos/crear');
+    
 });
 
 app.post('/medicos/crear', (req, res) => {
@@ -185,7 +227,7 @@ app.post('/medicos/asignarEspecialidad', (req, res) => {
     const opcionM = req.body.medicoId;
     const matricula= req.body.matricula;
     const sql = 'INSERT INTO `especialidad_medico`(`id_medico`, `id_especialidad`, `matricula`) VALUES (?,?,?)';
-    conn.query(sql, [opcionE, opcionM, matricula], (err, rows) => {
+    conn.query(sql, [opcionM, opcionE, matricula], (err, rows) => {
         if (err) {
             console.log(err, "No se pudo registrar la especialidad en la base de datos");
             res.status(500).send("Error al registrar la especialidad");

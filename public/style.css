@@ -1,132 +1,151 @@
 /* Estilo para la tabla */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 18px;
-    text-align: left;
-  }
-  
-  .table th, .table td {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-  }
-  
-  .table th {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .table tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-  
-  .table tr:hover {
-    background-color: #ddd;
-  }
-  
-  /* Estilo para botones */
-  .btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-    margin: 5px;
-    border: none;
-  }
-  
-  .btn-primary {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .btn-primary:hover {
-    background-color: #45a049;
-  }
-  
-  .btn-secondary {
-    background-color: #008CBA;
-    color: white;
-  }
-  
-  .btn-secondary:hover {
-    background-color: #007bb5;
-  }
-  
-  .btn-danger {
-    background-color: #f44336;
-    color: white;
-  }
-  
-  .btn-danger:hover {
-    background-color: #e53935;
-  }
-  .btn-success {
-    background-color: #4CAF50;
-    color: white;
-  }
-  
-  .btn-success:hover {
-    background-color: #45a049;
-  }
-  .btn-info {
-    background-color: #008CBA;
-    color: white;
-  }
-  
-  .btn-info:hover {
-    background-color: #007bb5;
-  }
+/* Estilos generales */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  .container input{
-    float: right;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
- /* Oculta el checkbox original */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table th, .table td {
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+}
+
+.table th {
+  background-color: #5cb85c;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table td {
+  color: #555;
+}
+
+/* Estilo para los botones */
+.btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  text-align: center;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #008cba;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #007bb5;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.btn-success {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #2ecc71;
+}
+
+.btn-info {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #2980b9;
+}
+
+/* Estilos para el contenedor */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.container input, .container select, .container button {
+  margin: 10px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  width: 250px;
+  transition: all 0.3s ease;
+}
+
+.container input:focus, .container select:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
+}
+
 .container input[type="checkbox"] {
   display: none;
 }
 
-/* Estilos para el label */
 .container input[type="checkbox"] + label {
   position: relative;
-  padding-left: 10px; /* Espacio para el cuadro de checkbox */
+  padding-left: 30px;
   cursor: pointer;
   font-size: 16px;
-  color: #333;
 }
 
-/* Cuadro del checkbox */
 .container input[type="checkbox"] + label:before {
   content: "";
   position: absolute;
-  right: 0;
-  bottom: auto;
-  top: auto;
+  left: 0;
+  top: 0;
   width: 20px;
   height: 20px;
-  border: 1px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 5px;
-  background-color: #fff;
+  background-color: white;
   transition: background-color 0.3s ease;
 }
 
-/* Checkmark (marca de verificación) */
 .container input[type="checkbox"]:checked + label:before {
-  background-color: #4CAF50;
-  content: "✓";
+  background-color: #27ae60;
+  content: "✔";
   color: white;
   display: flex;
   justify-content: center;
@@ -134,22 +153,24 @@
   font-size: 16px;
 }
 
-  .container input[type="date"]{
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
-  .container label{
-    margin: 10px;
-    padding: 10px;
-    padding: 10px 30px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    float: left;
-    left: 0;
-  }
+.container label {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Estilo para los inputs de fecha */
+.container input[type="date"] {
+  width: auto;
+}
+
+/* Estilo para los campos de texto */
+.container input[type="text"], .container select {
+  background-color: #f8f8f8;
+  font-size: 16px;
+}
+
+.container input[type="text"]:focus, .container select:focus {
+  background-color: #ffffff;
+  border-color: #27ae60;
+}

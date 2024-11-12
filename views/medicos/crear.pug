@@ -16,11 +16,7 @@ block contenido
             label(for="checkbox1") Estado 
             br
             input(type="date", name="fecha")
-            br
-            select(name="opcionM", id="opcion", placeholder="Medicos")
-                each especialidad in especialidades 
-                    option(value=especialidad.nombre) #{especialidad.nombre} 
-            br          
+            br        
             input(type="submit", value="Agregar" class= "btn btn-success")
         
         
