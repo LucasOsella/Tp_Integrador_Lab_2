@@ -1,3 +1,56 @@
-extends ../layout.pug
-block contenido 
-    p hola desde index pug
+extends ../layout
+
+block contenido
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css")
+    style.
+        .header-selects {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .doctor-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .doctor-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+        .schedule {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .schedule-day {
+            margin-bottom: 15px;
+        }
+        .schedule-time {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #e0f0ff;
+            border-radius: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+    .container
+        .header-selects
+            select.form-select
+                option(value="" disabled selected) Selecciona Especialidad
+                if especialidades.length
+                    each especialidad in especialidades
+                          option(value=especialidad.id) #{especialidad.nombre}
+                else 
+                    option No hay especialidades disponibles        
+            select.form-select
+                option(value="" disabled selected) Selecciona Médico
+                if medicos.length
+                    each medico in medicos
+                        option(value=medico.id) #{medico.nombre} #{medico.apellido} 
+                else
+                    option No hay médicos disponibles
+            input.form-control(type="date")
+

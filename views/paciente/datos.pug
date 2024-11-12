@@ -1,0 +1,20 @@
+extends ../layout
+block contenido 
+    div(class= "container") 
+        form(action="/pacientes/subir" method="post") 
+            h4 Datos del paciente
+            input(name="nombre", type="text",placeholder="Ingrese Nombre")
+            br
+            input(name="apellido",type="texto",placeholder="Ingrese Apellido")
+            br
+            input(type="text", name="dni",placeholder="Ingrese DNI")
+            br
+            input(type="text", name="obraSocial",placeholder="Ingrese Obra Social")
+            br
+            input(type="text", name="motivo",placeholder="Motivo de consulta (Opcional)")
+            h4 ¿A dónde te avisamos?
+            input(type="text",name="mail",placeholder="Ingrese E-mail")
+            br
+            input(type="text",name="telefono",placeholder="Ingrese Telefono")
+            br               
+            input(type="submit", value="Enviar" class= "btn btn-success")

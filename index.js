@@ -20,38 +20,53 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.redirect('/index');
- })
+})
  
-app.get('/index', (req, res) => {
-    res.render('principal/index');
+app.get('/index', async (req, res) => {
+    try {
+        const especialidades = await obtenerEspecialidades();
+        const especialidadMedico = await obtenerEspecialidadMedico();
+        const medicos = await obtenerMedicos();
+        res.render('principal/index', { especialidades, especialidadMedico, medicos });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al obtener los datos');
+    }
 })
 
-function obtenerEspecialidades(callback) {
-    conn.query('SELECT * FROM especialidad', (err, rows) => {
-      if (err) {
-        return callback(err, null);
-      }
-      callback(null, rows);
-    });
-  }
-
-function obtenerEspecialidadMedico(callback) {
-    conn.query('SELECT * FROM especialidad_medico', (err, rows) => {
-      if (err) {
-        return callback(err, null);
-      }
-      callback(null, rows);
+function obtenerEspecialidades() {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM especialidad', (err, rows) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(rows);
+        });
     });
 }
 
-function obtenerMedicos(callback) {
-    conn.query('SELECT * FROM medicos', (err, rows) => {
-      if (err) {
-        return callback(err, null);
-      }
-      callback(null, rows);
+function obtenerEspecialidadMedico() {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM especialidad_medico', (err, rows) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(rows);
+        });
     });
-}  
+}
+
+function obtenerMedicos() {
+    return new Promise((resolve, reject) => {
+        conn.query('SELECT * FROM medicos', (err, rows) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(rows);
+        });
+    });
+}
+
 
 app.get('/listarMedicos', (req, res) => {
     // Realizamos una consulta para obtener los médicos y sus especialidades
@@ -235,6 +250,10 @@ app.post('/medicos/asignarEspecialidad', (req, res) => {
             res.redirect('/listarMedicos');
         }
     });
+});
+
+app.get('/datos', (req, res) => {
+    res.render('paciente/datos');
 });
 
 
