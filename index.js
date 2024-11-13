@@ -6,10 +6,10 @@ const path = require('path');
 
 const conn = mysql.createConnection({
         port: 3306,
-        host: 'bxlcfwdmncqnf6c4wmhq-mysql.services.clever-cloud.com',
-        user: 'uabpatbca37tb3ob',
-        password: 'qMYB4dtBrVAB07LlrY1u',
-        database: 'bxlcfwdmncqnf6c4wmhq'
+        host: 'bvpwxrqheqe2nrgm5zrc-mysql.services.clever-cloud.com',
+        user: 'utt86elgd0jv8tze',
+        password: 'm5mz3Mds9MjXaBlMuTWK',
+        database: 'bvpwxrqheqe2nrgm5zrc'
     });
 
 
