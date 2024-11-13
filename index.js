@@ -256,6 +256,62 @@ app.get('/datos', (req, res) => {
     res.render('paciente/datos');
 });
 
+app.get('/medicos/horarios/:id', (req, res) => {
+    const id_medico = req.params.id;
+
+    // Consulta para obtener la información del médico
+    const sqlMedico = 'SELECT * FROM medicos WHERE id_medico = ?';
+    const sqlEspecialidades =` 
+        SELECT *
+        FROM especialidad e
+        JOIN especialidad_medico me ON e.id_especialidad = me.id_especialidad
+        WHERE me.id_medico = ?
+    `
+    ;
+
+    // Ejecutar ambas consultas
+    conn.query(sqlMedico, [id_medico], (err, rowsMedico) => {
+        if (err) {
+            console.log(err, "No se pudo obtener la información del médico");
+            res.status(500).send("Error al obtener la información del médico");
+        } else {
+            const medico = rowsMedico[0];
+
+            // Ahora obtener las especialidades del médico
+            conn.query(sqlEspecialidades, [id_medico], (err, rowsEspecialidades) => {
+                if (err) {
+                    console.log(err, "No se pudieron obtener las especialidades");
+                    res.status(500).send("Error al obtener las especialidades");
+                } else {
+                    const especialidades = rowsEspecialidades;
+
+                    // Renderiza la vista con la información del médico y sus especialidades
+                    res.render('medicos/horarios', { medico, especialidades });
+                }
+            });
+        }
+    });
+});
+
+app.post('/medicos/subirHorarios', (req, res) => {
+    const id_medico = req.body.id_medico;
+    const especialidad_id = req.body.especialidad;
+    const horaIn = req.body.horaIn;
+    const horaFin = req.body.horaFin;
+    const duracion = req.body.duracion;
+    const fecha = req.body.fecha;
+    const estado=req.body.estado;
+    const sql = 'INSERT INTO `horarios_agenda`(`id_medico`, `id_especialidad`,`fecha`, `hora_inicio`, `hora_fin`, `duracion`, `estado` ) VALUES (?,?,?,?,?,?,?)';
+    conn.query(sql, [id_medico, especialidad_id, fecha, horaIn, horaFin, duracion, estado ], (err, rows) => {
+        if (err) {
+            console.log(err, "No se pudo registrar el horario en la base de datos");
+            res.status(500).send("Error al registrar el horario");
+        } else {
+            res.redirect('/listarMedicos');
+        }
+    })
+});
+
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000');

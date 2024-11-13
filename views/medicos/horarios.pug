@@ -1,0 +1,31 @@
+extends ../layout 
+block contenido 
+    div(class="container")
+        form(action="/medicos/subirHorarios" method="post", autocomplete="off") 
+            input(name="id_medico", value=medico.id_medico, type="text", readonly placeholder=medico.nombre)
+            br
+            select(name="especialidad", id="opcion", placeholder="Especialidades")
+                option(value="" disabled selected) Selecciona Especialidad
+                    if especialidades.length
+                        each especialidad in especialidades
+                             option(value=especialidad.id_especialidad) #{especialidad.nombre} 
+                    else 
+                        option No hay especialidades disponibles
+            br
+            p Hora Inicio
+            input(type="time", name="horaIn",placeholder="Hora Inicio")
+            br
+            p Hora Fin
+            input(type="time",name="horaFin",placeholder="Hora Fin")
+            br
+            input(type="number",name="duracion",placeholder="Duracion de consulta (min)")        
+            br
+            input(type="date", name="fecha")
+            br  
+            select(name="estado")
+                option(value="" disabled selected) Selecciona Estado 
+                option(value="Libre") Libre
+                option(value="No disponible") No disponible
+                option(value="Reservado") Reservado
+            br         
+            input(type="submit", value="Agregar" class= "btn btn-success")
