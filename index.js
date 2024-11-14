@@ -25,14 +25,32 @@ app.get('/', (req, res) => {
 app.get('/index', async (req, res) => {
     try {
         const especialidades = await obtenerEspecialidades();
-        const especialidadMedico = await obtenerEspecialidadMedico();
-        const medicos = await obtenerMedicos();
-        res.render('principal/index', { especialidades, especialidadMedico, medicos });
+        res.render('principal/index', { especialidades });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error al obtener los datos');
     }
-})
+});
+
+app.get('/medicos/especialidad/:id', (req, res) => {
+    const especialidadId = req.params.id;
+    const sql = `
+        SELECT medicos.id_medico, medicos.nombre, medicos.apellido 
+        FROM medicos
+        JOIN especialidad_medico ON medicos.id_medico = especialidad_medico.id_medico
+        WHERE especialidad_medico.id_especialidad = ?
+    `;
+    
+    conn.query(sql, [especialidadId], (err, rows) => {
+        if (err) {
+            console.error("Error al obtener los médicos:", err);
+            res.status(500).send("Error al obtener los médicos");
+        } else {
+            res.json(rows);
+        }
+    });
+});
+
 
 function obtenerEspecialidades() {
     return new Promise((resolve, reject) => {
@@ -311,6 +329,30 @@ app.post('/medicos/subirHorarios', (req, res) => {
         }
     })
 });
+
+app.get('/cargarTurnos', (req, res) => {
+    res.render('paciente/datos');
+})
+
+app.get('/medicos/horariosDisponibles/:id', (req, res) => {
+    const id_medico = req.params.id;
+    const fecha = req.query.fecha;
+
+    const sql = `
+        SELECT hora_inicio, hora_fin 
+        FROM horarios_agenda 
+        WHERE id_medico = ? AND fecha = ? AND estado Like 'Libre'
+    `;
+
+    conn.query(sql, [id_medico, fecha], (err, rows) => {
+        if (err) {
+            console.error("Error al obtener los horarios:", err);
+            return res.status(500).json({ error: "Error al obtener los horarios" });
+        }
+        res.json(rows);
+    });
+});
+
 
 
 app.listen(3000, () => {
