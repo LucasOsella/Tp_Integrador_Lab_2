@@ -1,0 +1,46 @@
+extends ../layout
+
+block contenido
+    div(class="container")
+        h1 Asignar Turno
+
+        // Selección de paciente
+        form(action="/crearTurno", method="post")
+            label(for="paciente") Selecciona Paciente:
+            select(name="paciente" id="paciente" required onchange="actualizarObraSocial()")
+                // Verificar que la variable pacientes esté disponible y tenga datos
+                if pacientes && pacientes.length > 0
+                    option(value="" disabled selected) Selecciona Paciente
+                    each paciente in pacientes
+                        option(value=paciente.id_paciente 'data-obra-social'=paciente.obra_social) #{paciente.nombre} #{paciente.apellido} / #{paciente.obra_social}
+                else
+                    option No hay pacientes disponibles
+
+            // Campo oculto para enviar la obra social
+            input(type="hidden" name="obra_social" id="obra_social")
+
+            // Otros campos para asignar el turno (por ejemplo, motivo, contacto, etc.)
+            label(for="motivo") Motivo de consulta:
+            input(type="text" name="motivo" placeholder="Motivo de la consulta" required)
+
+            input(type="hidden" name="id_medico" value=id_medico)
+            input(type="hidden" name="horario" value=horario)
+            input(type="hidden" name="fecha" value=fecha)
+
+            input(type="submit" value="Asignar Turno" class="btn btn-success")
+
+        script.
+            // Función para actualizar la obra social cuando se selecciona un paciente
+            function actualizarObraSocial() {
+                var pacienteSelect = document.getElementById('paciente');
+                var obraSocialInput = document.getElementById('obra_social');
+                var selectedOption = pacienteSelect.options[pacienteSelect.selectedIndex];
+                // Actualizar el campo oculto con el valor de obra social
+                obraSocialInput.value = selectedOption ? selectedOption.getAttribute('data-obra-social') : '';
+            }
+
+
+
+
+
+

@@ -330,16 +330,12 @@ app.post('/medicos/subirHorarios', (req, res) => {
     })
 });
 
-app.get('/cargarTurnos', (req, res) => {
-    res.render('paciente/datos');
-})
-
 app.get('/medicos/horariosDisponibles/:id', (req, res) => {
     const id_medico = req.params.id;
     const fecha = req.query.fecha;
 
     const sql = `
-        SELECT hora_inicio, hora_fin 
+        SELECT * 
         FROM horarios_agenda 
         WHERE id_medico = ? AND fecha = ? AND estado Like 'Libre'
     `;
@@ -351,6 +347,87 @@ app.get('/medicos/horariosDisponibles/:id', (req, res) => {
         }
         res.json(rows);
     });
+});
+
+app.post('/pacientes/subir', (req, res) => {
+    const nombre = req.body.nombre;
+    const apellido = req.body.apellido;
+    const dni = req.body.dni;
+    const obraSocial = req.body.obraSocial;
+    const motivo = req.body.motivo; 
+    const mail = req.body.mail; 
+    const telefono = req.body.telefono; 
+    const fecha= new Date();
+
+    const sql= 'INSERT INTO `pacientes`(`nombre`, `apellido`, `dni`, `e-mail`, `telefono`, `obra_social`, `fecha_alta`) VALUES (?,?,?,?,?,?,?)';
+    conn.query(sql, [nombre, apellido, dni, mail, telefono, obraSocial,fecha], (err, rows) => {
+        if (err) {
+            console.log(err, "No se pudo registrar el paciente en la base de datos");
+            res.status(500).send("Error al registrar el paciente");
+        } else {
+            console.log("Paciente registrado con exito");
+            res.redirect('/index');
+        }
+    })
+})
+
+app.get('/agenda', async (req, res) => {
+    const medicos = await obtenerMedicos();
+    console.log(medicos); // Verifica si medicos contiene datos
+    
+    if (!medicos) {
+        return res.status(500).send('No se pudo obtener la lista de médicos');
+    }
+
+    res.render('medicos/agenda', { medicos });
+});
+
+app.get('/principal/turnos/:id/:id_medico/:fecha', (req, res) => {
+   const horario = req.params.id;
+   const id_medico = req.params.id_medico;
+   const fecha= req.params.fecha;
+   if (!id_medico) {
+       return res.status(400).send('ID de médico no proporcionado');
+   }
+   console.log(id_medico);
+   console.log(horario);
+
+   const sql = 'SELECT * FROM pacientes';
+   conn.query(sql, (err, rows) => {
+       if (err) {
+           console.log(err);
+           res.status(500).send('Error al obtener los pacientes');   
+       } else {
+           res.render('principal/turnos', { 
+            pacientes: rows, 
+            id_medico,
+            horario,
+            fecha
+           });
+       }
+   })
+});
+
+app.post('/crearTurno', (req, res) => {
+    const id_paciente = req.body.paciente;
+    const id_medico = req.body.id_medico;
+    const horario=req.body.horario;
+    const fecha=req.body.fecha;
+    const motivo=req.body.motivo;
+    const contacto=req.body.contacto;
+    const obra_social=req.body.obra_social;
+    const id_sucursal=1
+    const estado="Pendiente"
+    const sql = 'INSERT INTO `turnos`(`id_paciente`, `id_medico`, `id_sucursal`,`fecha`,`hora`,`motivo_consulta`,`obra_social`) VALUES (?,?,?,?,?,?,?)';
+    conn.query(sql, [id_paciente, id_medico, id_sucursal, fecha, horario, motivo,obra_social], (err, rows) => {
+        if (err) {
+            console.log(err, "No se pudo registrar el turno en la base de datos");
+            res.status(500).send("Error al registrar el turno");
+        } else {
+            res.redirect('/index');
+        }
+    })
+
 });
 
 

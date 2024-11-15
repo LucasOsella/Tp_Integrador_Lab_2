@@ -1,0 +1,80 @@
+extends ../layout
+
+block contenido 
+    h1 Listado de Turnos 
+
+    // Selector de médicos
+    label(for="medicoSelect") Selecciona un médico:
+    select(id="medicoSelect" name="medicos")
+        option(value="" disabled selected) Selecciona Médico
+        each medico in medicos 
+            option(value=medico.id_medico) #{medico.nombre} #{medico.apellido}
+
+    // Selector de fecha
+    label(for="fechaSelect") Selecciona una fecha:
+    input(type="date" id="fechaSelect" name="fecha")
+
+    // Tabla de horarios disponibles
+    table(class="table")
+        thead
+            tr 
+                th id
+                th Hora Inicio
+                th Hora Fin
+                th Estado
+                th Asignar Turno
+        tbody(id="horariosTableBody")
+            // Las filas de horarios se insertarán aquí dinámicamente
+
+    // Script para obtener y mostrar los horarios disponibles
+    script.
+        document.getElementById('medicoSelect').addEventListener('change', actualizarHorarios);
+        document.getElementById('fechaSelect').addEventListener('change', actualizarHorarios);
+
+        function actualizarHorarios() {
+            const medicoId = document.getElementById('medicoSelect').value;
+            const fecha = document.getElementById('fechaSelect').value;
+            if (!medicoId || !fecha) return; // Espera hasta que ambos sean seleccionados
+
+            // Llamada a la API para obtener horarios disponibles del médico seleccionado
+            fetch(`/medicos/horariosDisponibles/${medicoId}?fecha=${fecha}`)
+                .then(response => response.json())
+                .then(horarios => {
+                    const tableBody = document.getElementById('horariosTableBody');
+                    tableBody.innerHTML = ''; // Limpiar la tabla antes de insertar nuevos datos
+
+                    horarios.forEach(horario => {
+                        const row = document.createElement('tr');
+
+                        const id= document.createElement('td');
+                        id.textContent=horario.id
+                        row.appendChild(id);
+
+                        const horaInicioCell = document.createElement('td');
+                        horaInicioCell.textContent = horario.hora_inicio;
+                        row.appendChild(horaInicioCell);
+
+                        const horaFinCell = document.createElement('td');
+                        horaFinCell.textContent = horario.hora_fin;
+                        row.appendChild(horaFinCell);
+
+                        const estadoCell = document.createElement('td');
+                        estadoCell.textContent = 'Libre';
+                        row.appendChild(estadoCell);
+
+                        // Botón para asignar turno
+                        const asignarTurnoCell = document.createElement('td');
+                        const asignarButton = document.createElement('a');
+                        asignarButton.href = `/principal/turnos/${horario.hora_inicio}/${medicoId}/${fecha}`;  // Ruta para asignar turno
+                        asignarButton.classList.add('btn', 'btn-primary');
+                        asignarButton.textContent = 'Asignar Turno';
+                        asignarTurnoCell.appendChild(asignarButton);
+                        row.appendChild(asignarTurnoCell);
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los horarios:', error));
+        }
+
+

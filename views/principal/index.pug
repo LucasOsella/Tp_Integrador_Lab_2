@@ -1,81 +1,13 @@
 extends ../layout
+
 block contenido
-    div(class="container")
-        form(id="buscarTurnosForm") 
-            select#especialidadSelect(name="Especialidad")
-                option(value="" disabled selected) Selecciona Especialidad
-                if especialidades.length
-                    each especialidad in especialidades
-                        option(value=especialidad.id_especialidad) #{especialidad.nombre}
-                else 
-                    option No hay especialidades disponibles
+    div(class="container text-center mt-5")
+        h2 Bienvenido al Sistema de Gestión de Turnos
 
-            select#medicoSelect(name="Medico")
-                option(value="" disabled selected) Selecciona Médico
-
-            input(type="date" id="fecha")
-            button(type="button" id="buscarTurnosBtn" class="btn btn-success") Buscar Turnos
-
-        // Contenedor para mostrar los horarios disponibles
-        div#horariosContainer
-
-    script.
-        document.getElementById('fecha').addEventListener('input', function(event) {
-            const fecha = new Date(event.target.value);
-            const dia = fecha.getUTCDay();
-            if (dia === 0 || dia === 6) {
-                alert('Los sábados y domingos están inhabilitados. Por favor, elige otra fecha.');
-                event.target.value = '';
-            }
-        });
-
-        document.getElementById('especialidadSelect').addEventListener('change', function() {
-            const especialidadId = this.value;
-            const medicoSelect = document.getElementById('medicoSelect');
-            medicoSelect.innerHTML = '<option value="" disabled selected>Selecciona Médico</option>';
-            fetch(`/medicos/especialidad/${especialidadId}`)
-                .then(response => response.json())
-                .then(medicos => {
-                    medicos.forEach(medico => {
-                        const option = document.createElement('option');
-                        option.value = medico.id_medico;
-                        option.textContent = `${medico.nombre} ${medico.apellido}`;
-                        medicoSelect.appendChild(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error al cargar los médicos:', error);
-                });
-        });
-
-        // Evento para el botón "Buscar Turnos"
-        document.getElementById('buscarTurnosBtn').addEventListener('click', function() {
-            const medicoId = document.getElementById('medicoSelect').value;
-            const fecha = document.getElementById('fecha').value;
-            const horariosContainer = document.getElementById('horariosContainer');
-
-            // Limpiamos el contenedor de horarios
-            horariosContainer.innerHTML = '';
-
-            // Realizamos la solicitud AJAX para obtener los horarios
-            fetch(`/medicos/horariosDisponibles/${medicoId}?fecha=${fecha}`)
-                .then(response => response.json())
-                .then(horarios => {
-                    if (horarios.length) {
-                        horariosContainer.innerHTML = '<h4>Horarios disponibles:</h4><ul>';
-                        horarios.forEach(horario => {
-                            horariosContainer.innerHTML += `<li>${horario.hora_inicio} - ${horario.hora_fin}</li>`;
-                        });
-                        horariosContainer.innerHTML += '</ul>';
-                    } else {
-                        horariosContainer.innerHTML = '<p>No hay horarios disponibles para esta fecha.</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al cargar los horarios:', error);
-                    horariosContainer.innerHTML = '<p>Error al cargar los horarios</p>';
-                });
-        });
+        div(class="btn-group mt-4")
+            a.btn.btn-primary(href="/datos") Paciente
+            a.btn.btn-success(href="/agenda") Agenda
+            a.btn.btn-info(href="/listarMedicos") Doctores
 
 
 
