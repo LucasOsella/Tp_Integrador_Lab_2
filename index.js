@@ -23,13 +23,7 @@ app.get('/', (req, res) => {
 })
  
 app.get('/index', async (req, res) => {
-    try {
-        const especialidades = await obtenerEspecialidades();
-        res.render('principal/index', { especialidades });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error al obtener los datos');
-    }
+    res.render('principal/index');
 });
 
 app.get('/medicos/especialidad/:id', (req, res) => {

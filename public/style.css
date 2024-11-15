@@ -7,6 +7,24 @@ body {
   margin: 0;
   padding: 0;
 }
+select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  width: 250px;
+  transition: all 0.3s ease;
+}
+input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  width: 250px;
+  transition: all 0.3s ease;
+}
 
 .table {
   width: 100%;
