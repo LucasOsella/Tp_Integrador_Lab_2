@@ -1,0 +1,22 @@
+extends ../layout
+
+block contenido 
+    h1 Listado de Turnos
+    table(class="table")        
+        thead 
+            tr
+                th Id Turno
+                th Fecha
+                th Hora
+                th Estado
+                th Médico
+                th Paciente
+        tbody 
+            each turno in turnos 
+                tr
+                    td= turno.id_turno 
+                    td= turno.fecha
+                    td= turno.hora 
+                    td= turno.estado
+                    td= `${turno.nombre_medico} ${turno.apellido_medico}`
+                    td= `${turno.nombre_paciente} ${turno.apellido_paciente}`

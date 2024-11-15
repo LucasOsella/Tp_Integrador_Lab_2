@@ -1,0 +1,22 @@
+extends ../layout
+block contenido 
+     h1 Listado de Pacientes 
+        a(href="/datos" class="btn btn-success") Crear Paciente
+        table(class="table")        
+            thead 
+                tr
+                    th Id
+                    th Nombre
+                    th Apellido
+                    th Documento 
+                    th Teléfono
+                        
+            tbody 
+                each paciente in pacientes
+                    tr 
+                        td= paciente.id_paciente 
+                        td= paciente.nombre 
+                        td= paciente.apellido 
+                        td= paciente.dni
+                        td= paciente.telefono
+                

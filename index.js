@@ -360,7 +360,7 @@ app.post('/pacientes/subir', (req, res) => {
             res.status(500).send("Error al registrar el paciente");
         } else {
             console.log("Paciente registrado con exito");
-            res.redirect('/index');
+            res.redirect('/listarPacientes');
         }
     })
 })
@@ -424,9 +424,41 @@ app.post('/crearTurno', (req, res) => {
 
 });
 
+app.get('/listarPacientes', (req, res) => {
+    const sql = 'SELECT * FROM pacientes';
+    conn.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error al obtener los pacientes');   
+        } else {
+            res.render('paciente/listar', { pacientes: rows });
+        }
+    })
+})
 
+app.get('/listarTurnos', (req, res) => {
+    const sql = `
+        SELECT 
+            ma.id_turno, ma.fecha, ma.hora AS hora, ma.estado,
+            m.nombre AS nombre_medico, m.apellido AS apellido_medico,
+            p.nombre AS nombre_paciente, p.apellido AS apellido_paciente
+        FROM turnos AS ma
+        JOIN medicos AS m ON ma.id_medico = m.id_medico
+        JOIN pacientes AS p ON ma.id_paciente = p.id_paciente
+    `;
+
+    conn.query(sql, (err, rows) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error al obtener los turnos');   
+        } else {
+            res.render('medicos/listadoturnos', { turnos: rows });
+        }
+    });
+});
 
 app.listen(3000, () => {
     console.log('Server listening on port 3000');
 }    
 );
+

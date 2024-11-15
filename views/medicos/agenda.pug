@@ -1,7 +1,8 @@
 extends ../layout
 
 block contenido 
-    h1 Agenda de Medicos 
+    h1 Agenda de Medicos
+    a(href="/listarTurnos" class="btn btn-success") Listado de turnos
     // Selector de médicos
     label(for="medicoSelect") Selecciona un médico:
     select(id="medicoSelect" name="medicos")
@@ -74,6 +75,6 @@ block contenido
                     });
                 })
                 .catch(error => console.error('Error al cargar los horarios:', error));
-        }
+        }       
 
 
